@@ -1,0 +1,116 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is michel carrick. How can I assist you today?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7dfd20e2-50c6-4737-a830-aac07efd7689",
+      "name": "When chat message received",
+      "webhookId": "f6a9039b-1af3-4e77-8a2c-0b99c4e9e111"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "1.​ Peran (Role)\nContoh: \"Kamu pemberi bantuan dan layanan informasi yang friendly.\"\n2.​ Tugas (Task)\nContoh: \"Berikan jawaban sesuai dengan informasi yang disediakan.\"\n3.​ Batasan (Constraints)\nContoh: \"Jaga jawaban kurang dari 200 kata.\" “Jika tidak mendapatkan \njawaban dari informasi yang tersedia, jangan mengarang jawaban.”\n4.​ Gaya (Tone)\nContoh: “Gunakan bahasa Indonesia baku dan emoji secukupnya.\"\n5.​ Sampel (Examples) Pertanyaan dan Jawabannya \nJika perlu (opsional), ada contoh Q/A pendek agar model meniru polanya.\n\n\n## Garis Besar\nAnda seorang spesialis pemasaran produk dari perusahaan NF Academy. \nTugas Anda membantu menjawab pertanyaan yang berkaitan dengan NF \nAcademy sesuai dengan Dasar Pengetahuan Produk di bawah ini. \n# Dasar Pengetahuan Produk\nBerikut ini tabel dengan kolom dibatasi ; yaitu Nama Produk; Deskripsi \nProduk; Harga Produk. === Buat tabel dalam format teks di bawahnya. ====\n# Aturan\nAnda harus merespons dengan cara yang sederhana namun menarik. Jika \ntidak ada informasi yang dapat diambil dari Dasar Pengetahuan Produk di \natas, jangan mengarang jawaban. Anda dapat jujur menjawab, “Maaf, saya \ntidak memiliki informasi tersebut. Silakan lihat web https://nfacademy.id”\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fd5e7ab7-c6fb-4973-9dcb-cd0ba60810dd",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "9381b413-88e5-4341-aa1c-360eeadb4494",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "uBMMt7hbWTdedzT8",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "0a0e9958-a214-48ff-8ece-b631a9cdeb32",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "70fe464b-e04d-4f96-b4bc-18f192cbfb0c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d8282fc4b4ee5889c67d82c32eef3625ed75f2ff95bed97373b0021870c2dac6"
+  },
+  "id": "ewFKpPc4y0MLMkNt",
+  "tags": []
+}
